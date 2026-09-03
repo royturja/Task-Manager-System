@@ -1,1 +1,196 @@
+package com.mycompany.task_manager_system;
+
+import javax.swing.*;
+// JTable r data manage korte DefaultTableModel import koreci
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
+ //Date niye kaj korte LocalDate import
+import java.time.LocalDate;
+//Date r format r jonno
+import java.time.format.DateTimeFormatter;
+//vul date dile j exception hobe seta handle korte
+import java.time.format.DateTimeParseException;
+
+public class TaskManager extends JFrame implements ActionListener {
+
+    JPanel panel;
+
+    JLabel taskLabel;
+    JTextField taskField;
+    //deadline neyar jonno
+    JLabel deadlineLabel;//"Deadline:" lekha dekhate 
+    JTextField deadlineField;//daeadline date likhte Jtextfield
+
+    JButton addButton;
+    
+    JTable table;
+    //task list- table e dekhanor jonno jtable
+    //1ta table toiri hoy
+    JScrollPane scrollPane;//scroll korte
+    DefaultTableModel model;
+    //jtable r data rakhte default..model
+
+    public TaskManager() {
+
+        
+        setTitle("Task Manager System");
+        setSize(600, 450);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        
+        panel = new JPanel();
+        panel.setLayout(null);
+
+        
+        taskLabel = new JLabel("Task:");
+        taskLabel.setBounds(20, 20, 50, 30);
+
+        
+        taskField = new JTextField();
+        taskField.setBounds(80, 20, 200, 30);
+
+        // JLabel - Deadline lekha toiri korce
+        deadlineLabel = new JLabel("Deadline:");
+        //Deadline label r position,size
+        deadlineLabel.setBounds(20, 60, 70, 30);
+
+        // JTextField - Deadline date lekhar jonno textfield
+        deadlineField = new JTextField();
+        deadlineField.setBounds(80, 60, 200, 30);
+
+        
+        addButton = new JButton("Add Task");
+        addButton.setBounds(350, 20, 120, 30);
+        addButton.addActionListener(this);
+
+        // JTable Model,DefaultTableModel toiri 
+        model = new DefaultTableModel();
+     //ei model e column,row r data thakbe
+     //column toiri
+        model.addColumn("Task Name");//1st column
+        model.addColumn("Deadline");
+        model.addColumn("Status");
+    //jtable toiri,model r sathe jtable connect hocce
+    //tai model er data-jtable segula screen e dekhabe
+        
+        table = new JTable(model);
+
+        // Column width
+        //// 1st column r  preferred width 220 pixel
+        table.getColumnModel().getColumn(0).setPreferredWidth(220);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(2).setPreferredWidth(150);
+
+        // Row height
+        //every row r height 30 pixel
+        table.setRowHeight(30);
+
+        // Row select
+        //SINGLE_SELECTION = 1 sathe 1 ta row only select kora jabe
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // JScrollPane
+        //jtable k JScrollPane r modhe rakhci tai scrollable
+        scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(20, 110, 540, 250);
+
+        // Add components to JPanel
+        panel.add(taskLabel);
+        panel.add(taskField);
+
+        panel.add(deadlineLabel); 
+       //Deadline label panel e add koresi
+        panel.add(deadlineField);
+     //Deadline text field panel e add koresi
+        panel.add(addButton);
+        panel.add(scrollPane);
+
+        
+        add(panel);
+
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        // TextField theke task neya..
+        
+        // taskField e user ja likhse segula
+        // getText() diye segula nissi
+        
+        // trim() diye unnecessary space baad jay
+        
+        String task = taskField.getText().trim();
+
+        // Deadline neya-deadlineField theke text trim
+        String deadlineText = deadlineField.getText().trim();
+
+        // Empty field validation
+        if (task.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a task.");
+            //ekhane method off hoye jabe
+            //karon task dey ni tai nicher code execute r no need
+            return;
+        }
+
+        if (deadlineText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a deadline date.");
+            //Deadline sara task add korbe na
+            return;
+        }
+
+        // Deadline date validation using LocalDate
+        try {
+           //date format thik korar jonno
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//"25-08-2026" string k Java r LocalDate date a convert kora hocce
+// LocalDate = 2026-08-25
+            LocalDate deadline =
+                    LocalDate.parse(deadlineText, formatter);
+
+            // Past date check korar jonno
+            //isBefore() check kore 
+            //deadline < today hole deadline past date
+            if (deadline.isBefore(LocalDate.now())) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Deadline cannot be a past date.");
+
+                return;
+            }
+
+            // Task + Deadline + Status- table a add hobe
+            //model.addRow() use kore jtable r modhe new row add hocce
+            
+            //object r 3 ta value-3 ta column r modhe jabe
+            model.addRow(new Object[]{
+                    task,
+                    deadline,
+                    "Pending"
+            });
+
+            // TextField khali hobe
+            taskField.setText("");
+            deadlineField.setText("");
+//vul date format dhorar jonno
+        } catch (DateTimeParseException ex) {
+        //User jodi vul date format dey,
+            // tahole LocalDate.parse() exception toiri korbe
+            // sei exception catch kore user k error message dekhabe
+            JOptionPane.showMessageDialog(this,
+                    "Invalid date! Please use YYYY-MM-DD format.");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        new TaskManager();
+    }
+}
+
 
