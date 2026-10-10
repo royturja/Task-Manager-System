@@ -9,34 +9,52 @@ Features
 
 Graphical User Interface: 
 A simple and user-friendly interface built with Java Swing.
+
 Task Management: 
 Add new tasks, mark them as completed, and delete selected tasks.
+
 Input Validation: 
 Checks empty fields, validates the date format (yyyy-MM-dd), and prevents past deadlines.
+
 Task Status: 
 Displays tasks in a JTable with Pending or Completed status.
+
 File Handling: 
 Automatically saves tasks to tasks.txt and loads them when the application starts.
+
 Task Statistics:
  Shows the total number of tasks, pending tasks, and completed tasks.
+
 Visual Indicators: 
 Uses different background colors for completed and overdue tasks.
+
 Deadline Reminders: 
 Notifies users about overdue tasks and tasks due today or tomorrow, with an option to check reminders at any time.
 
 Tools and Technologies
 
 The following tools and technologies are used to develop the Task Manager System:
+
 Programming Language: Java
+
 Development Environment: NetBeans IDE
+
 GUI Technology: Java Swing
+
 Main GUI Components: JFrame, JPanel, JLabel, JTextField, JButton, JTable and JScrollPane
+
 Table Management: DefaultTableModel
+
 Data Structure: ArrayList
+
 Date Handling: LocalDate and DateTimeFormatter
+
 File Handling: FileWriter, BufferedWriter, FileReader and BufferedReader
+
 Notification: JOptionPane
+
 Data Storage: Text file (tasks.txt)
+
 Programming Concept: Event-driven programming and object-oriented programming
 
 User Manual
